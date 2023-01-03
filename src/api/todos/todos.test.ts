@@ -21,3 +21,36 @@ describe('GET /api/v1/todos', () => {
         expect(response.body.length).toBe(0);
       }));
 });
+
+describe('POST /api/v1/todos', () => {
+  it('responds with an error if Todo is invalid', async () =>
+    request(app)
+      .post('/api/v1/todos')
+      .send({
+        content: '',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(422)
+      .then((response) => {
+        expect(response.body).toHaveProperty('message');
+      }));
+
+  it('responds with an inserted object', async () =>
+    request(app)
+      .post('/api/v1/todos')
+      .send({
+        content: 'Learn Typescript',
+        done: false,
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then((response) => {
+        console.log(response.body);
+        expect(response.body).toHaveProperty('_id');
+        expect(response.body).toHaveProperty('content');
+        expect(response.body.content).toBe('Learn Typescript');
+        expect(response.body).toHaveProperty('done');
+      }));
+});
