@@ -22,6 +22,7 @@ describe('GET /api/v1/todos', () => {
       }));
 });
 
+let id = '';
 describe('POST /api/v1/todos', () => {
   it('responds with an error if Todo is invalid', async () =>
     request(app)
@@ -47,10 +48,34 @@ describe('POST /api/v1/todos', () => {
       .expect('Content-Type', /json/)
       .expect(201)
       .then((response) => {
-        console.log(response.body);
         expect(response.body).toHaveProperty('_id');
+        id = response.body._id;
         expect(response.body).toHaveProperty('content');
         expect(response.body.content).toBe('Learn Typescript');
         expect(response.body).toHaveProperty('done');
       }));
+});
+
+describe('GET /api/v1/todos/:id', () => {
+  it('responds with a single todo', async () =>
+    request(app)
+      .get(`/api/v1/todos/${id}`)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toHaveProperty('_id');
+        expect(response.body._id).toBe(id);
+        expect(response.body).toHaveProperty('content');
+        expect(response.body.content).toBe('Learn Typescript');
+        expect(response.body).toHaveProperty('done');
+      }));
+
+  it('responds with a not found error', (done) => {
+    request(app)
+      .get('/api/v1/todos/asdfasdf')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(404, done);
+  });
 });

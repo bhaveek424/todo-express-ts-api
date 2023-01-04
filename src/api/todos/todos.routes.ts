@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/', TodoHandlers.findAll);
 
-router.post(
+router.get(
   '/:id',
   validateRequest({
     params: ParamsWithId,

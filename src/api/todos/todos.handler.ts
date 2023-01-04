@@ -50,6 +50,25 @@ export async function findOne(
     });
     if (!result) {
       res.status(404);
+      throw new Error(`Todo with id "${req.params.id}" not found.`);
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/*export async function findOne(
+  req: Request<ParamsWithId, TodoWithId, {}>,
+  res: Response<TodoWithId>,
+  next: NextFunction,
+) {
+  try {
+    const result = await Todos.findOne({
+      _id: new ObjectId(req.params.id),
+    });
+    if (!result) {
+      res.status(404);
       throw new Error(`Todo with id "${req.params.id}" not found. `);
     }
     res.json(result);
@@ -57,3 +76,4 @@ export async function findOne(
     next(error);
   }
 }
+*/
