@@ -58,22 +58,29 @@ export async function findOne(
   }
 }
 
-/*export async function findOne(
-  req: Request<ParamsWithId, TodoWithId, {}>,
+export async function updateOne(
+  req: Request<ParamsWithId, TodoWithId, Todo>,
   res: Response<TodoWithId>,
   next: NextFunction,
 ) {
   try {
-    const result = await Todos.findOne({
-      _id: new ObjectId(req.params.id),
-    });
-    if (!result) {
+    const result = await Todos.findOneAndUpdate(
+      {
+        _id: new ObjectId(req.params.id),
+      },
+      {
+        $set: req.body,
+      },
+      {
+        returnDocument: 'after',
+      },
+    );
+    if (!result.value) {
       res.status(404);
-      throw new Error(`Todo with id "${req.params.id}" not found. `);
+      throw new Error(`Todo with id "${req.params.id}" not found`);
     }
-    res.json(result);
+    res.json(result.value);
   } catch (error) {
     next(error);
   }
 }
-*/

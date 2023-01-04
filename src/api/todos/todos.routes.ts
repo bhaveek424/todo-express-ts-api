@@ -16,12 +16,22 @@ router.get(
   }),
   TodoHandlers.findOne,
 );
+
 router.post(
   '/',
   validateRequest({
     body: Todo,
   }),
   TodoHandlers.createOne,
+);
+
+router.put(
+  '/:id',
+  validateRequest({
+    params: ParamsWithId,
+    body: Todo,
+  }),
+  TodoHandlers.updateOne,
 );
 
 export default router;
