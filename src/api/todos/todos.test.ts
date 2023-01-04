@@ -71,9 +71,17 @@ describe('GET /api/v1/todos/:id', () => {
         expect(response.body).toHaveProperty('done');
       }));
 
-  it('responds with a not found error', (done) => {
+  it('responds with an invalid ObjectId error', (done) => {
     request(app)
       .get('/api/v1/todos/asdfasdf')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(422, done);
+  });
+
+  it('responds with a not found error', (done) => {
+    request(app)
+      .get('/api/v1/todos/63b50716efcda2264594f85c')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(404, done);
