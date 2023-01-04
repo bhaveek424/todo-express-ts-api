@@ -10,8 +10,7 @@ export async function findAll(
   next: NextFunction,
 ) {
   try {
-    const result = await Todos.find();
-    const todos = await result.toArray();
+    const todos = await Todos.find().toArray();
     res.json(todos);
   } catch (error) {
     next(error);
