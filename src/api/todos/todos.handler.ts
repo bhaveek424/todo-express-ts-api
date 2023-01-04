@@ -84,3 +84,14 @@ export async function updateOne(
     next(error);
   }
 }
+
+export async function deleteOne(
+  req: Request<ParamsWithId, {}, {}>,
+  res: Response<{}>,
+  next: NextFunction,
+) {
+  try {
+  } catch (error) {
+    next(error);
+  }
+}
